@@ -6,7 +6,7 @@ $ npm install
 
 ## Setup
 
-Create `.env` file from `.env.example`. Then update the `MONGODB_CONNECTION_STRING` param.
+I wouldn't usually commit .env to the repo, but it's here for your convinience.
 
 ## Running the app
 
