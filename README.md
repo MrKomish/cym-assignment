@@ -56,11 +56,11 @@ Generally planned but didn't have time:
 
 ```typescript
 interface FriendRequest {
-	_id: ObjectId;
+  _id: ObjectId;
   createdAt: Date;
 
-	fromUserId: ObjectId;
-	toUserId: ObjectId;
-	status: 'pending' | 'rejected' | 'accepted';
+  fromUserId: ObjectId;
+  toUserId: ObjectId;
+  status: 'pending' | 'rejected' | 'accepted';
 }
 ```
