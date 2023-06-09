@@ -54,6 +54,8 @@ Generally planned but didn't have time:
 
 FriendRequest {
 	_id: ObjectId;
+  createdAt: Date;
+  
 	fromUserId: ObjectId;
 	toUserId: ObjectId;
 	status: 'pending' | 'rejected' | 'accepted';
