@@ -9,4 +9,4 @@ import { PostsModule } from 'src/posts/posts.module';
   providers: [FeedService],
   exports: [FeedService],
 })
-export class FeedsModule {}
+export class FeedModule {}

@@ -40,6 +40,7 @@ export class UsersService {
 
     const user = new this.userModel({
       username: createUser.username,
+      email: createUser.email,
       password: await this.passwordService.hash(createUser.password)
     });
     await user.save();

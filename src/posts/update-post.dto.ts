@@ -11,9 +11,10 @@ export class UpdatePostDto {
   content!: string;
 }
 
-export function toUpdatePost(id: string, dto: UpdatePostDto): UpdatePost {
+export function toUpdatePost(id: string, authorId: string, dto: UpdatePostDto): UpdatePost {
   return {
     id,
+    authorId: authorId,
     content: dto.content
   };
 }

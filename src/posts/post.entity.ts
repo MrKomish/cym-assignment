@@ -5,7 +5,7 @@ import { CommentSchema, Comment } from './comment.entity';
 export type PostDocument = HydratedDocument<Post>;
 
 @Schema({
-  timestamps: { createdAt: 'created_at' }
+  timestamps: true
 })
 export class Post {
   _id!: Types.ObjectId;

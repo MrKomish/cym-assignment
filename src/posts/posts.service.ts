@@ -12,6 +12,13 @@ import { FindPosts } from './find-posts.interface';
 import { CreateComment } from './create-comment.interface';
 import { Comment } from './comment.entity';
 
+export class NotUserPostError extends Error {
+  constructor(message: string) {
+      super(message);
+      this.name = "NotUserPostError";
+  }
+}
+
 @Injectable()
 export class PostsService {
   constructor(
@@ -30,11 +37,10 @@ export class PostsService {
       content: createPost.content
     });
     await post.save();
-
     return post;
   }
 
-  async createComment(createComment: CreateComment): Promise<Comment> {
+  async createComment(createComment: CreateComment) {
     // TODO replace by this.postModel.update for performance (not needing to get whole post)
     const post = await this.postModel.findById(createComment.postId);
     if (post == null) {
@@ -44,6 +50,10 @@ export class PostsService {
     comment.authorId = new Types.ObjectId(createComment.authorId);
     comment.content = createComment.content;
     post.comments.push(comment);
+    
+    await post.save();
+
+    return post.comments[post.comments.length - 1];
   }
 
   async find(findPosts: FindPosts): Promise<Post[]> {
@@ -69,10 +79,15 @@ export class PostsService {
 
   async update(update: UpdatePost): Promise<void> {
     // TODO replace logic by findByIdAndUpdate error
-    if (!this.exists(update.id)) {
+    const post = await this.get(update.id);
+    if (post == null) {
       throw new PostNotFoundError('Post doesn\'t exist');
     }
+    if (post.authorId.toString() != update.authorId) {
+      throw new NotUserPostError('Post doesn\'t belong to the user');
+    }
 
+    // TODO replace by save (need to make post typing wider)
     await this.postModel.findByIdAndUpdate(update.id, { content: update.content }).exec();
   }
 

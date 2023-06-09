@@ -21,6 +21,6 @@ export class FeedController {
     const feed = await this.feedService.get(
       toGetFeed(user.id, getFeed)
     );
-    return toFeedDto(feed.posts);
+    return toFeedDto(feed);
   }
 }

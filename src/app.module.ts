@@ -5,6 +5,8 @@ import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { GlobalConfig, globalConfigSchema } from './global-config.interface';
+import { PostsModule } from './posts/posts.module';
+import { FeedModule } from './feed/feed.module';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { GlobalConfig, globalConfigSchema } from './global-config.interface';
     }),
     UsersModule,
     AuthModule,
+    PostsModule,
+    FeedModule
   ],
 })
 export class AppModule {}

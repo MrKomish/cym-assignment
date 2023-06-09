@@ -8,6 +8,7 @@ export interface CommentDto {
 }
 
 export function toCommentDto(comment: Comment): CommentDto {
+  console.log(comment);
   return {
     id: comment._id.toString(),
     authorId: comment.authorId.toString(),

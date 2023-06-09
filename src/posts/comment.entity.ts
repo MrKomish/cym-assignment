@@ -4,7 +4,7 @@ import { HydratedDocument, Types } from 'mongoose';
 export type CommentDocument = HydratedDocument<Comment>;
 
 @Schema({
-  timestamps: { createdAt: 'created_at' }
+  timestamps: true
 })
 export class Comment {
   _id!: Types.ObjectId;

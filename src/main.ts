@@ -9,6 +9,6 @@ async function bootstrap() {
   const configService = await app.resolve(ConfigService<GlobalConfig>);
   const port = configService.get('PORT', { infer: true });
 
-  await app.listen(port);
+  await app.listen(port!);
 }
 bootstrap();

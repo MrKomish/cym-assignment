@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   NotFoundException,
+  BadRequestException,
   Param,
   Patch,
   Post as _Post,
@@ -11,7 +12,7 @@ import {
 
 import { PostDto, toPostDto } from './post.dto';
 import { CreatePostDto, toCreatePost } from './create-post.dto';
-import { PostsService } from './posts.service';
+import { NotUserPostError, PostsService } from './posts.service';
 import { LoggedInUser } from '../auth/logged-in-user.interface';
 import { GetUser } from '../auth/get-user.decorator';
 import { UpdatePostDto, toUpdatePost } from './update-post.dto';
@@ -36,7 +37,7 @@ export class PostsController {
     return toPostDto(post);
   }
 
-  @_Post("[:postId]/comments")
+  @_Post(":postId/comments")
   async createComment(
     @GetUser() user: LoggedInUser,
     @Param('postId') postId: string, // TODO turn to dto with validator for userId (should be mongodb id)
@@ -56,7 +57,7 @@ export class PostsController {
     return toCommentDto(comment);
   }
 
-  @Get("[:postId]")
+  @Get(":postId")
   async get(
     @Param('postId') postId: string // TODO turn to dto with validator for userId (should be mongodb id)
   ): Promise<PostDto> {
@@ -67,24 +68,28 @@ export class PostsController {
     return toPostDto(post);
   }
 
-  @Patch("[:postId]")
+  @Patch(":postId")
   async update(
+    @GetUser() user: LoggedInUser,
     @Param('postId') postId: string, // TODO turn to dto with validator for userId (should be mongodb id)
     @Body() updateDto: UpdatePostDto
   ): Promise<void> {
     try {
       await this.postsService.update(
-        toUpdatePost(postId, updateDto)
+        toUpdatePost(postId, user.id, updateDto)
       );
     } catch (err: any) {
       if (err instanceof PostNotFoundError) {
         throw new NotFoundException("Post not found");
       }
+      if (err instanceof NotUserPostError) {
+        throw new BadRequestException("Post doens't belong to the user");
+      }
       throw err;
     }
   }
 
-  @Delete("[:postId]")
+  @Delete(":postId")
   async delete(
     @Param('postId') postId: string // TODO turn to dto with validator for userId (should be mongodb id)
   ): Promise<void> {

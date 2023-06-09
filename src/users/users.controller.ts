@@ -46,7 +46,7 @@ export class UsersController {
     }
   }
 
-  @Get("[:userId]")
+  @Get(":userId")
   async get(
     @Param('userId') userId: string, // TODO turn to dto with validator for userId (should be mongodb id)
   ): Promise<UserDto> {
